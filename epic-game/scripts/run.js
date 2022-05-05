@@ -10,7 +10,11 @@ const main = async () => {
             "https://i.imgur.com/5pheBPs.png",
         ],
         [300, 200, 100], //キャラクターのHP
-        [70, 90, 50] //キャラクターの攻撃力
+        [70, 90, 50], //キャラクターの攻撃力
+        "waraiOtoko",//bossの名前
+        "https://i.imgur.com/CGbvLID.png", //image
+        10000, //hp
+        50 //attack
     );
     await gameContract.deployed();
     console.log("Contract deployed to:", gameContract.address);

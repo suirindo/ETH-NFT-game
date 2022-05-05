@@ -54,9 +54,27 @@ contract MyEpicGame is ERC721{
         string[] memory characterNames,
         string[] memory characterImageURIs,
         uint[] memory characterHp,
-        uint[] memory characterAttackDmg
+        uint[] memory characterAttackDmg,
+        // 下記の変数は、run.jsやdeploy.jsを介して渡される
+        string memory bossName,
+        string memory bossImageURI,
+        uint bossHp,
+        uint bossAttackDamage
     )
         ERC721("Stand Alone Complex", "SAC")
+    {
+        //ボスを初期化。ボスの情報をグローバル状態変数"bigBoss"に保存する
+        bigBoss = BigBoss({
+            name: bossName,
+            imageURI: bossImageURI,
+            hp: bossHp,
+            maxHp: bossHp,
+            attackDamage: bossAttackDamage
+        });
+        console.log("Done initializing boss %s w/ HP %s, img %s", bisBoss.name, bisBoss.hp, bisBoss.imageURI);
+
+    }
+
     {
         // ゲームで扱うすべてのキャラクターをループ処理で呼び出し、それぞれのキャラクターに付与されるデフォルト値をコントラクトに保存する
         for(uint i = 0; i < characterNames.length; i += 1) {
@@ -103,6 +121,25 @@ contract MyEpicGame is ERC721{
 
         // 次に使用する人のためにtokenIdをインクリメントする
         _tokenIds.increment();
+    }
+
+    function attackBoss() public{
+        // 1.プレイヤーのNFTの状態を取得する
+        uint256 nftTokenIdOfPlayer = nftHolders[msg.sender];
+        CharacterAttributes storage player = nftHolderAttributes[nftTokenIdOfPlayer];
+        console.log("\nPlayer w/ character %s about to attack. Has %s HP and %s AD", player.name, player.hp, player.attackDamage);
+        console.log("Boss %s has %s HP and %s AD", bigBoss.name, bigBoss.hp, bigBoss.attackDamage);
+
+        // 2.プレイヤーのHPが0以上であることを確認する
+        require (
+            player.hp > 0,
+            "Error: character must have H to attack boss."
+        );
+        // 3.ボスのHPが0以上であることを確認する
+        require (
+            biBoss.hp > 0,
+            "Error: boss must have HP to attack boss."
+        )
     }
 
     // nftHolderAttributes を更新して、tokenURIを添付する関数を作成

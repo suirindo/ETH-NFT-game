@@ -11,7 +11,11 @@ const main = async () => {
         "https://i.imgur.com/5pheBPs.png",
     ],
       [100, 200, 300], // キャラクターのHP
-      [100, 50, 25] // キャラクターの攻撃力
+      [100, 50, 25], // キャラクターの攻撃力
+      "waraiOtoko",//bossの名前
+      "https://i.imgur.com/CGbvLID.png", //image
+      10000, //hp
+      50 //attack
     );
     // ここでは、`nftGame` コントラクトが、
     // ローカルのブロックチェーンにデプロイされるまで待つ処理を行っています。

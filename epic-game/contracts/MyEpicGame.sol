@@ -24,6 +24,15 @@ contract MyEpicGame is ERC721{
         uint attackDamage;
     }
 
+    struct BigBoss {
+        string name;
+        string imageURI;
+        uint hp;
+        uint maxHp;
+        uint attackDamage;
+    }
+    BigBoss public bigBoss;
+
     //Openzeppelinが提供するtokenIdsを簡単に追跡するライブラリを呼び出している
     using Counters for Counters.Counter;
     // tokenIdはNFTの一意な識別子で、0, 1, 2, ,,,Nのように付与される

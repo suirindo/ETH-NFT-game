@@ -28,20 +28,17 @@ const main = async () => {
     let txn;
     // 3体のNFTキャラクターの中から、0番目のキャラクターを Mint しています。
     // キャラクターは、3体（0番, 1番, 2番）体のみ。
-    txn = await gameContract.mintCharacterNFT(0);
+    txn = await gameContract.mintCharacterNFT(2);
     // Minting が仮想マイナーにより、承認されるのを待ちます。
     await txn.wait();
-    console.log("Minted NFT #1");
-  
-    txn = await gameContract.mintCharacterNFT(1);
+    txn = await gameContract.attackBoss();
     await txn.wait();
-    console.log("Minted NFT #2");
-  
-    txn = await gameContract.mintCharacterNFT(2);
+    console.log("First attack.");
+    txn = await gameContract.attackBoss();
     await txn.wait();
-    console.log("Minted NFT #3");
-  
-    console.log("Done deploying and minting!");
+    console.log("Second attack.");
+
+    console.log("Done!");
   };
   const runMain = async () => {
     try {

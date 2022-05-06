@@ -71,11 +71,9 @@ contract MyEpicGame is ERC721{
             maxHp: bossHp,
             attackDamage: bossAttackDamage
         });
-        console.log("Done initializing boss %s w/ HP %s, img %s", bisBoss.name, bisBoss.hp, bisBoss.imageURI);
+        console.log("Done initializing boss %s w/ HP %s, img %s", bigBoss.name, bigBoss.hp, bigBoss.imageURI);
 
-    }
-
-    {
+    
         // ゲームで扱うすべてのキャラクターをループ処理で呼び出し、それぞれのキャラクターに付与されるデフォルト値をコントラクトに保存する
         for(uint i = 0; i < characterNames.length; i += 1) {
             defaultCharacters.push(CharacterAttributes({
@@ -137,10 +135,46 @@ contract MyEpicGame is ERC721{
         );
         // 3.ボスのHPが0以上であることを確認する
         require (
-            biBoss.hp > 0,
+            bigBoss.hp > 0,
             "Error: boss must have HP to attack boss."
-        )
+        );
+        // 4.プレイヤーがボスを攻撃できるようにする
+        if (bigBoss.hp < player.attackDamage) {
+            bigBoss.hp = 0;
+        } else {
+            bigBoss.hp = bigBoss.hp - player.attackDamage;
+        }
+        // 5.ボスがプレイヤーを攻撃できるようにする
+        if (player.hp < bigBoss.attackDamage) {
+            player.hp = 0;
+        } else {
+            player.hp = player.hp - bigBoss.attackDamage;
+        }
+
+        // プレイヤーの攻撃をターミナルに出力する
+        console.log("Player attacked boss. New boss hp: %s", bigBoss.hp);
+        // ボスの攻撃をターミナルに出力する
+        console.log("Boss attacked player. New player hp: %s\n", player.hp);
     }
+
+    function checkIfUserHasNFT() public view returns (CharacterAttributes memory) {
+        // ユーザーのtokenIdを取得する
+        uint256 userNftTokenId = nftHolders[msg.sender];
+
+        // ユーザーがすでにtokenIdを持っている場合、そのキャラクターの属性情報を返す
+        if (userNftTokenId > 0) {
+            return nftHolderAttributes[userNftTokenId];
+        }
+        // それ以外の場合は空文字を返す
+        else {
+            CharacterAttributes memory emptyStruct;
+            return emptyStruct;
+        }
+    }
+
+    
+
+
 
     // nftHolderAttributes を更新して、tokenURIを添付する関数を作成
     function tokenURI(uint256 _tokenId) public view override returns(string memory) {

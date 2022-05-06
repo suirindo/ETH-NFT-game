@@ -9,8 +9,8 @@ const main = async () => {
             "https://i.imgur.com/QedG2Zk.png",
             "https://i.imgur.com/5pheBPs.png",
         ],
-        [300, 200, 100], //キャラクターのHP
-        [70, 90, 50], //キャラクターの攻撃力
+        [100, 200, 300], //キャラクターのHP
+        [100, 50, 25], //キャラクターの攻撃力
         "waraiOtoko",//bossの名前
         "https://i.imgur.com/CGbvLID.png", //image
         10000, //hp
@@ -23,9 +23,16 @@ const main = async () => {
     let txn;
     // 3体のNFTキャラクターの中から、３番目のキャラクターをMint
     txn = await gameContract.mintCharacterNFT(2);
-
     // Mintingが仮想マイナーにより承認されるのを待つ
     await txn.wait();
+
+    // 1回目の攻撃: attackBoss 関数を追加
+    txn = await gameContract.attackBoss();
+    await txn.wait();
+
+    // 2回目の攻撃: attackBoss 関数を追加
+    txn = await gameContract.attackBoss();
+    await txn.wait();   
 
     // NFTのURIの値を取得する。tokenURIはERC721から継承した関数
     let returnedTokenUri = await gameContract.tokenURI(1);
